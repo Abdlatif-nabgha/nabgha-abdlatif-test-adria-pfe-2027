@@ -2,9 +2,10 @@ package com.bank.transactionservice.client;
 
 import java.util.UUID;
 
-record AccountDto(
+public record AccountDto(
         UUID id,
         String customerReference,
-        String status, String currency,
+        String status,
+        String currency,
         double balance
 ) {}
