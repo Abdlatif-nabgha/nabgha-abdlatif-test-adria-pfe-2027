@@ -4,6 +4,13 @@ server:
 spring:
   application:
     name: transaction-service
+  datasource:
+    url: ${TRANSACTION_DB_URL:jdbc:postgresql://localhost:5433/transaction_db}
+    username: ${TRANSACTION_DB_USERNAME:bank}
+    password: ${POSTGRES_PASSWORD:bank}
+  jpa:
+    hibernate:
+      ddl-auto: update
   config:
     import: optional:configserver:http://localhost:8888
   cloud:

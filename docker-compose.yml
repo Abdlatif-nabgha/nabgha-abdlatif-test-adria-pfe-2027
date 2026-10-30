@@ -1,0 +1,36 @@
+services:
+  account-db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: account_db
+      POSTGRES_USER: bank
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-bank}
+    ports:
+      - "5432:5432"
+    volumes:
+      - account-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bank -d account_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  transaction-db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: transaction_db
+      POSTGRES_USER: bank
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-bank}
+    ports:
+      - "5433:5432"
+    volumes:
+      - transaction-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bank -d transaction_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  account-db-data:
+  transaction-db-data:
