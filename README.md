@@ -8,28 +8,28 @@ Ce projet implémente une architecture microservices distribuée pour la gestion
 
 ```mermaid
 flowchart TD
-    Client["Client Web / Mobile / Postman"] -->|Port 8080| GW["API Gateway\n(Spring Cloud Gateway)"]
+    Client["Client Web / Mobile / Postman"] -->|"Port 8080"| GW["API Gateway<br/>Spring Cloud Gateway"]
 
-    subgraph Service Discovery & Config
-        Eureka["Discovery Service\n(Eureka - Port 8761)"]
-        Config["Config Server\n(Spring Cloud Config - Port 8888)"]
+    subgraph Discovery_Config["Service Discovery & Config"]
+        Eureka["Discovery Service<br/>Eureka: 8761"]
+        Config["Config Server<br/>Spring Cloud Config: 8888"]
     end
 
-    GW -->|Circuit Breaker + lb| AS["Account Service\n(Port 8081)"]
-    GW -->|Circuit Breaker + lb| TS["Transaction Service\n(Port 8082)"]
+    GW -->|"Circuit Breaker + lb"| AS["Account Service<br/>Port 8081"]
+    GW -->|"Circuit Breaker + lb"| TS["Transaction Service<br/>Port 8082"]
 
-    GW -.->|Register & Discover| Eureka
-    AS -.->|Register & Discover| Eureka
-    TS -.->|Register & Discover| Eureka
+    GW -.->|"Register & Discover"| Eureka
+    AS -.->|"Register & Discover"| Eureka
+    TS -.->|"Register & Discover"| Eureka
 
-    AS -.->|Fetch Config| Config
-    TS -.->|Fetch Config (max-amount=1000)| Config
+    AS -.->|"Fetch Config"| Config
+    TS -.->|"Fetch Config: max-amount=1000"| Config
 
-    TS -->|OpenFeign + Resilience4J| AS
-    TS -->|Publish Events| Kafka[("Kafka Topic:\nbank.transactions.created")]
+    TS -->|"OpenFeign + Resilience4J"| AS
+    TS -->|"Publish Events"| Kafka[("Kafka Topic:<br/>bank.transactions.created")]
 
-    AS --> DB_ACC[("PostgreSQL\naccount_db (5432)")]
-    TS --> DB_TX[("PostgreSQL\ntransaction_db (5433)")]
+    AS --> DB_ACC[("PostgreSQL<br/>account_db: 5432")]
+    TS --> DB_TX[("PostgreSQL<br/>transaction_db: 5433")]
 ```
 
 ---
