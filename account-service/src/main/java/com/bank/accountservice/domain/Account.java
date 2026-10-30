@@ -49,7 +49,3 @@ public class Account {
         }
     }
 }
-enum AccountStatus {
-    ACTIVE,
-    BLOCKED
-}
