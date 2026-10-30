@@ -11,10 +11,20 @@ spring:
           uri: lb://account-service
           predicates:
             - Path=/api/v1/accounts/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: accountServiceCircuitBreaker
+                fallbackUri: forward:/fallback/accounts
         - id: transaction-service
           uri: lb://transaction-service
           predicates:
             - Path=/api/v1/transactions/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: transactionServiceCircuitBreaker
+                fallbackUri: forward:/fallback/transactions
 
 eureka:
   client:
