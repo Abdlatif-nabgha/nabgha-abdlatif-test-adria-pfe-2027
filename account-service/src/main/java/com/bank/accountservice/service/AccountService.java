@@ -12,7 +12,7 @@ public interface AccountService {
 
     AccountResponseDTO createAccount(AccountRequestDTO request);
     AccountResponseDTO getAccountById(UUID id);
-    AccountResponseDTO getAllAccounts();
+    List<AccountResponseDTO> getAllAccounts();
     List<AccountResponseDTO> getAccountsByCustomer(String customerReference);
     AccountResponseDTO updateAccountStatus(UUID id, AccountStatus status);
     AccountResponseDTO debit(UUID accountId, double amount, String currency);
