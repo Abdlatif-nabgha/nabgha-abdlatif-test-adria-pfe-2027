@@ -5,6 +5,10 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.UUID;
+
+import com.bank.accountservice.exception.AccountBlockedException;
+import com.bank.accountservice.exception.CurrencyMismatchException;
+import com.bank.accountservice.exception.InsufficientBalanceException;
 @Entity
 @ToString
 @Builder
@@ -27,7 +31,7 @@ public class Account {
     public void debit(double amount, String transactionCurrency) {
         validateTransaction(amount, transactionCurrency);
         if (this.balance < amount) {
-            throw new IllegalStateException("Solde insuffisant pour effectuer l'operation.");
+            throw new InsufficientBalanceException("Solde insuffisant pour effectuer l'operation.");
         }
         this.balance -= amount;
     }
@@ -39,13 +43,13 @@ public class Account {
 
     private void validateTransaction(double amount, String transactionCurrency) {
         if (!isActive()) {
-            throw new IllegalStateException("Le compte n'est pas actif (statut: " + status + ").");
+            throw new AccountBlockedException("Le compte n'est pas actif (statut: " + status + ").");
         }
         if (amount <= 0) {
             throw new IllegalArgumentException("Le montant doit être strictement positif.");
         }
         if (transactionCurrency != null && !transactionCurrency.equalsIgnoreCase(this.currency)) {
-            throw new IllegalArgumentException("Devise incompatible : attendu " + this.currency + ", reçu " + transactionCurrency);
+            throw new CurrencyMismatchException("Devise incompatible : attendu " + this.currency + ", reçu " + transactionCurrency);
         }
     }
 }
