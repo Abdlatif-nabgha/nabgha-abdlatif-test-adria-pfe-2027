@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-@FeignClient(name = "account-service", url = "${account-service.url:http://localhost:8081}")
+@FeignClient(name = "account-service", url = "${account-service.url:}")
 public interface AccountRestClient {
 
     @GetMapping("/api/v1/accounts/{id}")
