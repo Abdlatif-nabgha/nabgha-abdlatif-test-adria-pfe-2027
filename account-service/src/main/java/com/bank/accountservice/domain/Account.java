@@ -1,12 +1,21 @@
 package com.bank.accountservice.domain;
 
 
-import java.util.UUID;
+import jakarta.persistence.*;
+import lombok.*;
 
+import java.util.UUID;
+@Entity
+@ToString
+@Builder
+@NoArgsConstructor @AllArgsConstructor @Getter @Setter
 public class Account {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String customerReference;
+    @Enumerated(EnumType.STRING)
     private AccountStatus status;
     private String currency;
     private double balance;
@@ -27,7 +36,7 @@ public class Account {
         validateTransaction(amount, transactionCurrency);
         this.balance += amount;
     }
-    
+
     private void validateTransaction(double amount, String transactionCurrency) {
         if (!isActive()) {
             throw new IllegalStateException("Le compte n'est pas actif (statut: " + status + ").");
