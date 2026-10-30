@@ -1,7 +1,7 @@
 package com.bank.accountservice.domain;
 
 
-enum AccountStatus {
+public enum AccountStatus {
     ACTIVE,
     BLOCKED
 }
